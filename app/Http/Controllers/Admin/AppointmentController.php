@@ -14,7 +14,7 @@ class AppointmentController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Appointment::with('doctor')->orderBy('start', 'desc');
+        $query = Appointment::with('doctor')->orderBy('start', 'asc');
 
         
         if ($request->filled('status')) {

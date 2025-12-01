@@ -553,8 +553,8 @@ const getSlotStatus = (date, time) => {
     // Buscar si hay alguna cita en este horario
     for (const appointment of props.doctor.appointments) {
         // Las citas vienen de la DB como strings 'YYYY-MM-DD HH:MM:SS'
-        const appointmentStart = appointment.start;
-        const appointmentEnd = appointment.end;
+        const appointmentStart = appointment.start_formatted || appointment.start;
+        const appointmentEnd = appointment.end_formatted || appointment.end;
         
         // Comparar directamente los strings en formato SQL (funciona porque están en el mismo formato)
         // Verificar si hay superposición: slot.start < appointment.end && slot.end > appointment.start

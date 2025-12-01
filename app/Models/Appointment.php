@@ -21,12 +21,22 @@ class Appointment extends Model
         'status'
     ];
 
-    // No convertir a datetime para evitar problemas de timezone
-    // Las fechas se manejan como strings en formato 'Y-m-d H:i:s'
     protected $casts = [
-        'start' => 'string',
-        'end' => 'string',
+        'start' => 'datetime',
+        'end' => 'datetime',
     ];
+
+    protected $appends = ['start_formatted', 'end_formatted'];
+
+    public function getStartFormattedAttribute()
+    {
+        return $this->start ? $this->start->format('Y-m-d H:i:s') : null;
+    }
+
+    public function getEndFormattedAttribute()
+    {
+        return $this->end ? $this->end->format('Y-m-d H:i:s') : null;
+    }
 
     public static function boot()
     {

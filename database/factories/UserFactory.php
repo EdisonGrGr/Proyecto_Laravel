@@ -39,9 +39,7 @@ class UserFactory extends Factory
         ];
     }
 
-    /**
-     * Indicate that the model's email address should be unverified.
-     */
+    
     public function unverified(): static
     {
         return $this->state(fn (array $attributes) => [
@@ -49,9 +47,7 @@ class UserFactory extends Factory
         ]);
     }
 
-    /**
-     * Indicate that the user should have a personal team.
-     */
+    
     public function withPersonalTeam(?callable $callback = null): static
     {
         if (! Features::hasTeamFeatures()) {

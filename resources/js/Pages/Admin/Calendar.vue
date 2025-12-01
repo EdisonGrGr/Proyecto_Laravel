@@ -122,14 +122,14 @@ const hours = Array.from({ length: 12 }, (_, i) => i + 8);
 
 const weekDays = computed(() => {
     const days = [];
-    const dayNames = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+    const dayNames = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
     
     for (let i = 0; i < 7; i++) {
         const date = new Date(currentWeekStart.value);
         date.setDate(date.getDate() + i);
         
         days.push({
-            name: dayNames[i],
+            name: dayNames[date.getDay()],
             date: date.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit' }),
             fullDate: date
         });
@@ -141,8 +141,12 @@ const weekDays = computed(() => {
 const getAppointmentsForSlot = (date, hour) => {
     return props.appointments.filter(apt => {
         const aptDate = new Date(apt.start);
-        return aptDate.toDateString() === date.toDateString() && 
-               aptDate.getHours() === hour;
+        const isSameDay = aptDate.getFullYear() === date.getFullYear() &&
+                         aptDate.getMonth() === date.getMonth() &&
+                         aptDate.getDate() === date.getDate();
+        const isSameHour = aptDate.getHours() === hour;
+        
+        return isSameDay && isSameHour;
     });
 };
 
