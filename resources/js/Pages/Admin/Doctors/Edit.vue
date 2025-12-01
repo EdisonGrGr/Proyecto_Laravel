@@ -1,198 +1,217 @@
-<script setup>
-import { useForm } from '@inertiajs/vue3';
-import AppLayout from '@/Layouts/AppLayout.vue';
-
-const props = defineProps({
-    doctor: Object,
-    specialties: Object
-});
-
-const form = useForm({
-    name: props.doctor.name,
-    license_number: props.doctor.license_number,
-    specialty: props.doctor.specialty,
-    bio: props.doctor.bio || '',
-    email: props.doctor.email,
-    phone: props.doctor.phone,
-    is_active: props.doctor.is_active
-});
-
-const submit = () => {
-    form.put(`/admin/doctors/${props.doctor.slug}`);
-};
-</script>
-
 <template>
-    <AppLayout :title="`Editar Médico - Dr. ${doctor.name}`">
-        <!-- Botón Volver -->
-        <div class="mb-6">
-            <a 
-                href="/admin/doctors"
-                class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm text-gray-700 hover:bg-gray-50 transition-colors duration-200"
-            >
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-                Volver a la lista
-            </a>
-        </div>
+    <AppLayout :title="`Editar ${doctor.name}`">
+        <template #header>
+            <div class="flex justify-between items-center">
+                <div class="flex items-center gap-4">
+                    <Link
+                        :href="`/admin/doctors/${doctor.slug}`"
+                        class="text-indigo-600 hover:text-indigo-800"
+                    >
+                        ← Volver al médico
+                    </Link>
+                    <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                        Editar Médico: {{ doctor.name }}
+                    </h2>
+                </div>
+                <Link
+                    :href="`/admin/doctors/${doctor.slug}`"
+                    class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
+                >
+                    Cancelar
+                </Link>
+            </div>
+        </template>
 
-        <!-- Header con gradiente -->
-        <div class="bg-gradient-to-r from-yellow-500 to-orange-500 text-white py-8 px-6 rounded-3xl shadow-2xl mb-8">
-            <h1 class="text-4xl font-bold mb-2">Editar Médico</h1>
-            <p class="text-yellow-100 text-lg">Dr. {{ doctor.name }}</p>
-        </div>
+        <div class="py-12">
+            <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
+                <div class="bg-white rounded-lg shadow-sm p-6">
+                    <form @submit.prevent="submit">
+                        
+                        <div class="mb-8">
+                            <h3 class="text-lg font-semibold mb-4">Información Básica</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">
+                                        Nombre completo *
+                                    </label>
+                                    <input
+                                        v-model="form.name"
+                                        type="text"
+                                        class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                        required
+                                    />
+                                    <p v-if="form.errors.name" class="text-red-600 text-sm mt-1">
+                                        {{ form.errors.name }}
+                                    </p>
+                                </div>
 
-        <!-- Formulario -->
-        <div class="bg-white rounded-xl shadow-lg p-6">
-            <form @submit.prevent="submit" class="space-y-6">
-                <!-- Información Personal -->
-                <div class="border-b border-gray-200 pb-6">
-                    <h2 class="text-2xl font-bold text-gray-800 mb-6">Información Personal</h2>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Nombre Completo -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">
-                                Nombre Completo <span class="text-red-500">*</span>
-                            </label>
-                            <input 
-                                type="text" 
-                                v-model="form.name"
-                                required
-                                class="w-full rounded-lg border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500"
-                                placeholder="Juan Pérez García"
-                            >
-                            <p v-if="form.errors.name" class="text-red-500 text-sm mt-1">{{ form.errors.name }}</p>
-                        </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">
+                                        Especialidad *
+                                    </label>
+                                    <input
+                                        v-model="form.specialty"
+                                        type="text"
+                                        class="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                        required
+                                    />
+                                    <p v-if="form.errors.specialty" class="text-red-600 text-sm mt-1">
+                                        {{ form.errors.specialty }}
+                                    </p>
+                                </div>
 
-                        <!-- Número de Licencia -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">
-                                Número de Licencia Médica <span class="text-red-500">*</span>
-                            </label>
-                            <input 
-                                type="text" 
-                                v-model="form.license_number"
-                                required
-                                class="w-full rounded-lg border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500"
-                                placeholder="123456"
-                            >
-                            <p v-if="form.errors.license_number" class="text-red-500 text-sm mt-1">{{ form.errors.license_number }}</p>
-                        </div>
-
-                        <!-- Especialidad -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">
-                                Especialidad <span class="text-red-500">*</span>
-                            </label>
-                            <select 
-                                v-model="form.specialty"
-                                required
-                                class="w-full rounded-lg border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500"
-                            >
-                                <option value="">Seleccione una especialidad</option>
-                                <option 
-                                    v-for="(label, value) in specialties" 
-                                    :key="value"
-                                    :value="value"
-                                >
-                                    {{ label }}
-                                </option>
-                            </select>
-                            <p v-if="form.errors.specialty" class="text-red-500 text-sm mt-1">{{ form.errors.specialty }}</p>
-                        </div>
-
-                        <!-- Estado -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">
-                                Estado
-                            </label>
-                            <div class="flex items-center h-11">
-                                <input 
-                                    type="checkbox" 
-                                    v-model="form.is_active"
-                                    class="rounded border-gray-300 text-yellow-600 shadow-sm focus:border-yellow-500 focus:ring-yellow-500 h-5 w-5"
-                                >
-                                <span class="ml-3 text-gray-700">Activo (acepta nuevas citas)</span>
+                                <div class="md:col-span-2">
+                                    <label class="flex items-center">
+                                        <input
+                                            v-model="form.active"
+                                            type="checkbox"
+                                            class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                        />
+                                        <span class="ml-2 text-sm text-gray-700">Médico activo</span>
+                                    </label>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
 
-                <!-- Información de Contacto -->
-                <div class="border-b border-gray-200 pb-6">
-                    <h2 class="text-2xl font-bold text-gray-800 mb-6">Información de Contacto</h2>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Email -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">
-                                Correo Electrónico <span class="text-red-500">*</span>
-                            </label>
-                            <input 
-                                type="email" 
-                                v-model="form.email"
-                                required
-                                class="w-full rounded-lg border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500"
-                                placeholder="doctor@ejemplo.com"
-                            >
-                            <p v-if="form.errors.email" class="text-red-500 text-sm mt-1">{{ form.errors.email }}</p>
+                        
+                        <div class="mb-8">
+                            <h3 class="text-lg font-semibold mb-4">Horario de Atención</h3>
+                            <div class="space-y-4">
+                                <div v-for="day in daysOfWeek" :key="day.value" class="border rounded-lg p-4">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <h4 class="font-medium text-gray-900">{{ day.label }}</h4>
+                                        <button
+                                            type="button"
+                                            @click="addTimeSlot(day.value)"
+                                            class="text-sm text-indigo-600 hover:text-indigo-800"
+                                        >
+                                            + Agregar horario
+                                        </button>
+                                    </div>
+                                    
+                                    <div
+                                        v-for="(slot, index) in form.weekly_schedule[day.value]"
+                                        :key="index"
+                                        class="flex gap-3 items-center mb-2"
+                                    >
+                                        <input
+                                            v-model="slot.start"
+                                            type="time"
+                                            class="border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                            required
+                                        />
+                                        <span class="text-gray-500">-</span>
+                                        <input
+                                            v-model="slot.end"
+                                            type="time"
+                                            class="border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                            required
+                                        />
+                                        <button
+                                            type="button"
+                                            @click="removeTimeSlot(day.value, index)"
+                                            class="text-red-600 hover:text-red-800"
+                                        >
+                                            Eliminar
+                                        </button>
+                                    </div>
+                                    
+                                    <p v-if="!form.weekly_schedule[day.value] || form.weekly_schedule[day.value].length === 0" class="text-sm text-gray-500 italic">
+                                        Sin horarios configurados
+                                    </p>
+                                </div>
+                            </div>
                         </div>
 
-                        <!-- Teléfono -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">
-                                Teléfono <span class="text-red-500">*</span>
-                            </label>
-                            <input 
-                                type="tel" 
-                                v-model="form.phone"
-                                required
-                                class="w-full rounded-lg border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500"
-                                placeholder="555-1234"
+                        
+                        <div class="flex justify-between">
+                            <button
+                                type="button"
+                                @click="deleteDoctor"
+                                class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
                             >
-                            <p v-if="form.errors.phone" class="text-red-500 text-sm mt-1">{{ form.errors.phone }}</p>
+                                Eliminar Médico
+                            </button>
+                            <div class="flex gap-3">
+                                <Link
+                                    :href="`/admin/doctors/${doctor.slug}`"
+                                    class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
+                                >
+                                    Cancelar
+                                </Link>
+                                <button
+                                    type="submit"
+                                    :disabled="form.processing"
+                                    class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 disabled:opacity-50"
+                                >
+                                    {{ form.processing ? 'Guardando...' : 'Guardar Cambios' }}
+                                </button>
+                            </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
-
-                <!-- Biografía -->
-                <div>
-                    <h2 class="text-2xl font-bold text-gray-800 mb-6">Información Adicional</h2>
-                    
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">
-                            Biografía / Experiencia
-                        </label>
-                        <textarea 
-                            v-model="form.bio"
-                            rows="5"
-                            class="w-full rounded-lg border-gray-300 shadow-sm focus:border-yellow-500 focus:ring-yellow-500"
-                            placeholder="Describe la experiencia y credenciales del médico..."
-                        ></textarea>
-                        <p class="text-gray-500 text-sm mt-1">Esta información será visible para los pacientes</p>
-                        <p v-if="form.errors.bio" class="text-red-500 text-sm mt-1">{{ form.errors.bio }}</p>
-                    </div>
-                </div>
-
-                <!-- Botones -->
-                <div class="flex gap-4 pt-6">
-                    <button 
-                        type="submit"
-                        :disabled="form.processing"
-                        class="flex-1 px-6 py-3 bg-gradient-to-r from-yellow-500 to-orange-500 text-white rounded-xl shadow-lg hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-200 font-bold text-lg disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                        {{ form.processing ? 'Guardando...' : 'Actualizar Información' }}
-                    </button>
-                    <a 
-                        href="/admin/doctors"
-                        class="px-6 py-3 bg-gray-200 text-gray-700 rounded-xl shadow-lg hover:bg-gray-300 transition-all duration-200 font-bold text-lg text-center"
-                    >
-                        Cancelar
-                    </a>
-                </div>
-            </form>
+            </div>
         </div>
     </AppLayout>
 </template>
+
+<script setup>
+import AppLayout from '@/Layouts/AppLayout.vue';
+import { Link, useForm, router } from '@inertiajs/vue3';
+
+const props = defineProps({
+    doctor: Object
+});
+
+const daysOfWeek = [
+    { value: 'monday', label: 'Lunes' },
+    { value: 'tuesday', label: 'Martes' },
+    { value: 'wednesday', label: 'Miércoles' },
+    { value: 'thursday', label: 'Jueves' },
+    { value: 'friday', label: 'Viernes' },
+    { value: 'saturday', label: 'Sábado' },
+    { value: 'sunday', label: 'Domingo' }
+];
+
+const form = useForm({
+    name: props.doctor.name,
+    specialty: props.doctor.specialty,
+    active: props.doctor.active,
+    weekly_schedule: props.doctor.weekly_schedule || {
+        monday: [],
+        tuesday: [],
+        wednesday: [],
+        thursday: [],
+        friday: [],
+        saturday: [],
+        sunday: []
+    }
+});
+
+const addTimeSlot = (day) => {
+    if (!form.weekly_schedule[day]) {
+        form.weekly_schedule[day] = [];
+    }
+    form.weekly_schedule[day].push({ start: '09:00', end: '17:00' });
+};
+
+const removeTimeSlot = (day, index) => {
+    form.weekly_schedule[day].splice(index, 1);
+};
+
+const submit = () => {
+    form.put(`/admin/doctors/${props.doctor.slug}`, {
+        preserveScroll: true
+    });
+};
+
+const deleteDoctor = () => {
+    if (confirm(`¿Estás seguro de eliminar al médico ${props.doctor.name}? Esta acción no se puede deshacer.`)) {
+        router.delete(`/admin/doctors/${props.doctor.slug}`, {
+            onSuccess: () => {
+                
+            }
+        });
+    }
+};
+</script>

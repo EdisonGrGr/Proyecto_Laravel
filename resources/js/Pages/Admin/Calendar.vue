@@ -3,7 +3,7 @@
         <template #header>
             <div class="flex justify-between items-center">
                 <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                    Calendario de Consultas Oftalmológicas
+                    Calendario Semanal
                 </h2>
                 <Link href="/dashboard" class="text-indigo-600 hover:text-indigo-800">
                     ← Volver al panel
@@ -18,13 +18,13 @@
                     <div class="flex flex-col md:flex-row justify-between items-center gap-4">
                         
                         <div class="flex items-center gap-4">
-                            <label class="text-sm font-medium text-gray-700">Oftalmólogo:</label>
+                            <label class="text-sm font-medium text-gray-700">Médico:</label>
                             <select 
                                 v-model="selectedDoctor"
                                 @change="filterByDoctor"
                                 class="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                             >
-                                <option value="">Todos los especialistas</option>
+                                <option value="">Todos los médicos</option>
                                 <option v-for="doctor in doctors" :key="doctor.id" :value="doctor.slug">
                                     {{ doctor.name }}
                                 </option>
@@ -91,7 +91,7 @@
                                 @click="showAppointmentDetails(appointment)"
                             >
                                 <div class="font-semibold truncate">{{ appointment.patient_name }}</div>
-                                <div class="text-gray-600 truncate">{{ formatTime(appointment.start_at) }}</div>
+                                <div class="text-gray-600 truncate">{{ formatTime(appointment.start) }}</div>
                                 <div class="text-gray-500 truncate text-xs">{{ appointment.doctor.name }}</div>
                             </div>
                         </div>
@@ -140,7 +140,7 @@ const weekDays = computed(() => {
 
 const getAppointmentsForSlot = (date, hour) => {
     return props.appointments.filter(apt => {
-        const aptDate = new Date(apt.start_at);
+        const aptDate = new Date(apt.start);
         return aptDate.toDateString() === date.toDateString() && 
                aptDate.getHours() === hour;
     });

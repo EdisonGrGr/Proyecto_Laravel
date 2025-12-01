@@ -17,17 +17,14 @@ return new class extends Migration
             $table->string('patient_email');
             $table->string('patient_phone')->nullable();
 
-            $table->dateTime('start_at');
-            $table->dateTime('end_at');
+            $table->dateTime('start');
+            $table->dateTime('end');
 
+            
             $table->enum('status', ['pending', 'confirmed', 'completed', 'rejected'])
                   ->default('pending');
 
             $table->timestamps();
-            
-            $table->index('status');
-            $table->index('start_at');
-            $table->index(['doctor_id', 'start_at']);
         });
     }
 

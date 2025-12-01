@@ -12,15 +12,10 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug')->unique();
-            $table->foreignId('specialty_id')->constrained()->onDelete('cascade');
-            $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
-            $table->json('weekly_schedule')->nullable();
-            $table->boolean('is_active')->default(true);
+            $table->string('specialty')->default('Oftalmología');
+            $table->json('weekly_schedule')->nullable(); 
+            $table->boolean('active')->default(true);
             $table->timestamps();
-            
-            $table->index('slug');
-            $table->index('specialty_id');
-            $table->index('is_active');
         });
     }
 

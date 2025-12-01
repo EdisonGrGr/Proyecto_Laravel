@@ -29,7 +29,7 @@ class AppointmentRejected extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Cita Médica No Disponible',
+            subject: 'Cita No Aprobada - Oftalmología',
         );
     }
 
@@ -39,7 +39,7 @@ class AppointmentRejected extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.appointment-rejected',
+            markdown: 'emails.appointments.rejected',
         );
     }
 

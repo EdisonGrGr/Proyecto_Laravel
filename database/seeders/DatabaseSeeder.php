@@ -4,170 +4,170 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use App\Models\Doctor;
-use App\Models\DoctorAvailability;
 use App\Models\Appointment;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // Create admin user
-        User::factory()->create([
+        
+        $admin = User::create([
             'name' => 'Administrador',
-            'email' => 'admin@clinica.com',
-            'password' => bcrypt('password'),
+            'email' => 'admin@oftalmo.ucaldas.edu.co',
+            'password' => Hash::make('password'),
+            'email_verified_at' => now(),
         ]);
 
-        // Create test user
-        User::factory()->create([
-            'name' => 'Usuario Test',
-            'email' => 'test@example.com',
-            'password' => bcrypt('password'),
+        
+        $schedule1 = [
+            'monday' => [
+                ['start' => '08:00', 'end' => '12:00'],
+                ['start' => '14:00', 'end' => '18:00']
+            ],
+            'tuesday' => [
+                ['start' => '08:00', 'end' => '12:00'],
+                ['start' => '14:00', 'end' => '18:00']
+            ],
+            'wednesday' => [
+                ['start' => '08:00', 'end' => '12:00'],
+                ['start' => '14:00', 'end' => '18:00']
+            ],
+            'thursday' => [
+                ['start' => '08:00', 'end' => '12:00'],
+                ['start' => '14:00', 'end' => '18:00']
+            ],
+            'friday' => [
+                ['start' => '08:00', 'end' => '12:00'],
+                ['start' => '14:00', 'end' => '18:00']
+            ],
+            'saturday' => [],
+            'sunday' => [],
+        ];
+
+        $schedule2 = [
+            'monday' => [
+                ['start' => '09:00', 'end' => '13:00'],
+                ['start' => '15:00', 'end' => '19:00']
+            ],
+            'tuesday' => [
+                ['start' => '09:00', 'end' => '13:00'],
+                ['start' => '15:00', 'end' => '19:00']
+            ],
+            'wednesday' => [
+                ['start' => '09:00', 'end' => '13:00']
+            ],
+            'thursday' => [
+                ['start' => '09:00', 'end' => '13:00'],
+                ['start' => '15:00', 'end' => '19:00']
+            ],
+            'friday' => [
+                ['start' => '09:00', 'end' => '13:00'],
+                ['start' => '15:00', 'end' => '19:00']
+            ],
+            'saturday' => [
+                ['start' => '09:00', 'end' => '12:00']
+            ],
+            'sunday' => [],
+        ];
+
+        $schedule3 = [
+            'monday' => [
+                ['start' => '10:00', 'end' => '14:00'],
+                ['start' => '16:00', 'end' => '20:00']
+            ],
+            'tuesday' => [
+                ['start' => '10:00', 'end' => '14:00'],
+                ['start' => '16:00', 'end' => '20:00']
+            ],
+            'wednesday' => [
+                ['start' => '10:00', 'end' => '14:00'],
+                ['start' => '16:00', 'end' => '20:00']
+            ],
+            'thursday' => [
+                ['start' => '10:00', 'end' => '14:00']
+            ],
+            'friday' => [
+                ['start' => '10:00', 'end' => '14:00'],
+                ['start' => '16:00', 'end' => '20:00']
+            ],
+            'saturday' => [],
+            'sunday' => [],
+        ];
+
+        $doctor1 = Doctor::create([
+            'name' => 'Dr. Juan Pérez',
+            'slug' => 'dr-juan-perez',
+            'specialty' => 'Oftalmología',
+            'weekly_schedule' => $schedule1,
+            'active' => true,
         ]);
 
-        /*
-        |--------------------------------------------------------------------------
-        | Ophthalmology Doctors
-        |--------------------------------------------------------------------------
-        */
-
-        // Create specialized doctors with realistic data
-        $doctors = [];
-
-        // Dr. Retina Specialist
-        $doctors[] = Doctor::factory()->active()->create([
-            'name' => 'Dra. María Fernández González',
-            'license_number' => 'LIC-RETIN001',
-            'specialty' => 'Retina y Vítreo',
-            'bio' => 'Especialista en enfermedades de retina con más de 15 años de experiencia. Subespecialidad en retinopatía diabética y degeneración macular. Certificada por el Consejo Mexicano de Oftalmología.',
-            'email' => 'maria.fernandez@clinica.com',
-            'phone' => '+52 555-123-4567',
+        $doctor2 = Doctor::create([
+            'name' => 'Dra. María García',
+            'slug' => 'dra-maria-garcia',
+            'specialty' => 'Oftalmología',
+            'weekly_schedule' => $schedule2,
+            'active' => true,
         ]);
 
-        // Dr. Glaucoma Specialist
-        $doctors[] = Doctor::factory()->active()->create([
-            'name' => 'Dr. Roberto Martínez Cruz',
-            'license_number' => 'LIC-GLAUC001',
-            'specialty' => 'Glaucoma',
-            'bio' => 'Experto en diagnóstico y tratamiento de glaucoma. Especialista en cirugías mínimamente invasivas (MIGS) y trabeculectomías. Miembro de la Sociedad Mexicana de Glaucoma.',
-            'email' => 'roberto.martinez@clinica.com',
-            'phone' => '+52 555-234-5678',
+        $doctor3 = Doctor::create([
+            'name' => 'Dr. Carlos Rodríguez',
+            'slug' => 'dr-carlos-rodriguez',
+            'specialty' => 'Oftalmología',
+            'weekly_schedule' => $schedule3,
+            'active' => true,
         ]);
 
-        // Dr. Pediatric Specialist
-        $doctors[] = Doctor::factory()->active()->create([
-            'name' => 'Dra. Ana Patricia López Ruiz',
-            'license_number' => 'LIC-PEDIA001',
-            'specialty' => 'Oftalmología Pediátrica',
-            'bio' => 'Dedicada al cuidado oftalmológico de niños y adolescentes. Especialista en estrabismo, ambliopía y enfermedades congénitas oculares. Certificación internacional en oftalmología pediátrica.',
-            'email' => 'ana.lopez@clinica.com',
-            'phone' => '+52 555-345-6789',
+        
+        $duration = (int) env('APPOINTMENT_DURATION_MINUTES', 20);
+        
+        
+        $nextMonday = Carbon::now()->next('Monday')->setTime(8, 0);
+        Appointment::create([
+            'doctor_id' => $doctor1->id,
+            'patient_name' => 'Ana Martínez',
+            'patient_email' => 'ana@example.com',
+            'patient_phone' => '555-0101',
+            'start' => $nextMonday,
+            'end' => $nextMonday->copy()->addMinutes($duration),
+            'status' => 'pending',
         ]);
 
-        // Dr. Refractive Surgery
-        $doctors[] = Doctor::factory()->active()->create([
-            'name' => 'Dr. Carlos Hernández Pérez',
-            'license_number' => 'LIC-REFRA001',
-            'specialty' => 'Cirugía Refractiva',
-            'bio' => 'Cirujano experto en LASIK, PRK y cirugía refractiva con lente intraocular. Más de 5000 cirugías realizadas. Certificado en uso de tecnología femtosegundo.',
-            'email' => 'carlos.hernandez@clinica.com',
-            'phone' => '+52 555-456-7890',
+        Appointment::create([
+            'doctor_id' => $doctor1->id,
+            'patient_name' => 'Pedro López',
+            'patient_email' => 'pedro@example.com',
+            'patient_phone' => '555-0102',
+            'start' => $nextMonday->copy()->addMinutes($duration),
+            'end' => $nextMonday->copy()->addMinutes($duration * 2),
+            'status' => 'confirmed',
         ]);
 
-        // Dr. Cornea Specialist
-        $doctors[] = Doctor::factory()->active()->create([
-            'name' => 'Dr. Jorge Luis Ramírez Silva',
-            'license_number' => 'LIC-CORNE001',
-            'specialty' => 'Córnea y Segmento Anterior',
-            'bio' => 'Especialista en trasplante de córnea, queratocono y enfermedades de superficie ocular. Fellow en cornea por la Universidad de Harvard.',
-            'email' => 'jorge.ramirez@clinica.com',
-            'phone' => '+52 555-567-8901',
+        
+        $nextTuesday = Carbon::now()->next('Tuesday')->setTime(9, 0);
+        Appointment::create([
+            'doctor_id' => $doctor2->id,
+            'patient_name' => 'Laura Sánchez',
+            'patient_email' => 'laura@example.com',
+            'patient_phone' => '555-0103',
+            'start' => $nextTuesday,
+            'end' => $nextTuesday->copy()->addMinutes($duration),
+            'status' => 'pending',
         ]);
 
-        // Dr. General Ophthalmologist
-        $doctors[] = Doctor::factory()->active()->create([
-            'name' => 'Dra. Laura Sofía García Vega',
-            'license_number' => 'LIC-GENER001',
-            'specialty' => 'Oftalmología General',
-            'bio' => 'Oftalmóloga general con amplia experiencia en consulta, diagnóstico y tratamiento de las patologías oculares más frecuentes. Enfoque en medicina preventiva.',
-            'email' => 'laura.garcia@clinica.com',
-            'phone' => '+52 555-678-9012',
+        
+        $nextWednesday = Carbon::now()->next('Wednesday')->setTime(10, 0);
+        Appointment::create([
+            'doctor_id' => $doctor3->id,
+            'patient_name' => 'Roberto Díaz',
+            'patient_email' => 'roberto@example.com',
+            'patient_phone' => '555-0104',
+            'start' => $nextWednesday,
+            'end' => $nextWednesday->copy()->addMinutes($duration),
+            'status' => 'confirmed',
         ]);
-
-        /*
-        |--------------------------------------------------------------------------
-        | Doctor Availabilities
-        |--------------------------------------------------------------------------
-        */
-
-        foreach ($doctors as $doctor) {
-            // Monday to Friday: Morning shift (9:00 - 13:00)
-            for ($day = 1; $day <= 5; $day++) {
-                DoctorAvailability::factory()->create([
-                    'doctor_id' => $doctor->id,
-                    'day_of_week' => $day,
-                    'start_time' => '09:00:00',
-                    'end_time' => '13:00:00',
-                    'is_active' => true,
-                ]);
-            }
-
-            // Monday, Wednesday, Friday: Afternoon shift (15:00 - 19:00)
-            foreach ([1, 3, 5] as $day) {
-                DoctorAvailability::factory()->create([
-                    'doctor_id' => $doctor->id,
-                    'day_of_week' => $day,
-                    'start_time' => '15:00:00',
-                    'end_time' => '19:00:00',
-                    'is_active' => true,
-                ]);
-            }
-
-            // Saturday: Morning shift only (9:00 - 14:00)
-            DoctorAvailability::factory()->create([
-                'doctor_id' => $doctor->id,
-                'day_of_week' => 6,
-                'start_time' => '09:00:00',
-                'end_time' => '14:00:00',
-                'is_active' => true,
-            ]);
-        }
-
-        /*
-        |--------------------------------------------------------------------------
-        | Sample Appointments
-        |--------------------------------------------------------------------------
-        */
-
-        foreach ($doctors as $doctor) {
-            // Pending appointments (awaiting confirmation)
-            Appointment::factory()->count(3)->pending()->create([
-                'doctor_id' => $doctor->id,
-            ]);
-
-            // Confirmed appointments (upcoming)
-            Appointment::factory()->count(5)->confirmed()->create([
-                'doctor_id' => $doctor->id,
-            ]);
-
-            // Completed appointments (past)
-            Appointment::factory()->count(4)->completed()->create([
-                'doctor_id' => $doctor->id,
-            ]);
-
-            // Some rejected appointments
-            Appointment::factory()->count(1)->rejected()->create([
-                'doctor_id' => $doctor->id,
-            ]);
-        }
-
-        $this->command->info('✅ Database seeded successfully with ophthalmology clinic data!');
-        $this->command->info('📧 Admin: admin@clinica.com / password');
-        $this->command->info('👨‍⚕️ ' . count($doctors) . ' doctors created with schedules');
-        $this->command->info('📅 Sample appointments created for all doctors');
     }
 }

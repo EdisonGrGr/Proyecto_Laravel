@@ -1,61 +1,238 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Sistema de Agendamiento de Citas Oftalmológicas
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+> **Proyecto Final - Laravel - Php**  
+> Universidad de Caldas - Ingeniería de Sistemas  
+> Diciembre 2025
 
-## About Laravel
+## Descripción del Proyecto
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Aplicación web desarrollada en Laravel 12 con Vue 3 para la gestión de citas médicas en el área de oftalmología. El sistema permite a pacientes agendar citas de manera autónoma mientras que el panel administrativo puede gestionar médicos, horarios y aprobar/rechazar citas.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Funcionalidades Principales
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+**Portal Público (Pacientes):**
+- Visualización de médicos disponibles con sus especialidades
+- Calendario interactivo que muestra disponibilidad en tiempo real
+- Formulario de agendamiento de citas
+- Notificaciones automáticas por correo electrónico
 
-## Learning Laravel
+**Panel Administrativo:**
+- Dashboard con estadísticas de citas (pendientes, confirmadas, rechazadas)
+- CRUD completo de médicos con gestión de horarios semanales
+- Gestión de citas con opciones de aceptar/rechazar/completar
+- Vista de calendario semanal con filtros
+- Sistema de notificaciones por email a pacientes
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Tecnologías Utilizadas
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+| Tecnología | Versión | Propósito |
+|------------|---------|-----------|
+| Laravel | 12.x | Framework PHP backend |
+| Laravel Jetstream | 5.x | Sistema de autenticación |
+| Inertia.js | 1.x | Adaptador SPA sin API REST |
+| Vue.js | 3.x | Framework JavaScript frontend |
+| TailwindCSS | 3.x | Framework CSS utility-first |
+| PostgreSQL | 14+ | Base de datos relacional |
+| Vite | 5.x | Build tool y bundler |
+| Mailtrap | - | Servicio de email testing |
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Instalación y Configuración
 
-## Laravel Sponsors
+### Prerrequisitos
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Antes de comenzar, asegúrate de tener instalado:
+- PHP >= 8.2
+- Composer (gestor de dependencias PHP)
+- Node.js >= 18 y npm
+- PostgreSQL >= 14
+- Git
 
-### Premium Partners
+### Pasos de Instalación
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+**1. Clonar el repositorio**
+```bash
+git clone https://github.com/EdisonGrGr/Proyecto_Laravel.git
+cd Proyecto_Laravel
+```
 
-## Contributing
+**2. Instalar dependencias de backend**
+```bash
+composer install
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+**3. Instalar dependencias de frontend**
+```bash
+npm install
+```
 
-## Code of Conduct
+**4. Configurar variables de entorno**
+```bash
+# Copiar archivo de ejemplo
+cp .env.example .env
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+# Generar key de aplicación
+php artisan key:generate
+```
 
-## Security Vulnerabilities
+**5. Configurar base de datos**
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Editar el archivo `.env` con tus credenciales de PostgreSQL:
+```env
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=Proyecto_laravel
+DB_USERNAME=postgres
+DB_PASSWORD=tu_password
+```
 
-## License
+**6. Crear la base de datos**
+```sql
+-- En psql o pgAdmin
+CREATE DATABASE "Proyecto_laravel";
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+**7. Ejecutar migraciones y seeders**
+```bash
+php artisan migrate:fresh --seed
+```
+
+Este comando creará:
+- 1 usuario administrador
+- 3 médicos con horarios configurados
+- 4 citas de ejemplo
+
+**8. Compilar assets frontend**
+```bash
+# Para desarrollo
+npm run dev
+
+# Para producción
+npm run build
+```
+
+**9. Iniciar servidor de desarrollo**
+```bash
+php artisan serve
+```
+
+La aplicación estará disponible en: `http://127.0.0.1:8000`
+
+## Credenciales de Acceso
+
+### Panel Administrativo
+- **URL:** http://127.0.0.1:8000/login
+- **Email:** admin@oftalmo.ucaldas.edu.co
+- **Contraseña:** password
+
+## 📧 Configuración de Emails
+
+El sistema utiliza Mailtrap para testing de emails. Configurar en `.env`:
+
+```env
+MAIL_MAILER=smtp
+MAIL_HOST=sandbox.smtp.mailtrap.io
+MAIL_PORT=2525
+MAIL_USERNAME=tu_mailtrap_username
+MAIL_PASSWORD=tu_mailtrap_password
+```
+
+Para obtener credenciales gratuitas: https://mailtrap.io
+
+##  Estructura del Proyecto
+
+```
+├── app/
+│   ├── Http/Controllers/
+│   │   ├── Admin/          # Controladores del panel admin
+│   │   └── PublicController.php
+│   ├── Models/
+│   │   ├── Doctor.php      # Modelo de médicos
+│   │   ├── Appointment.php # Modelo de citas
+│   │   └── User.php
+│   └── Mail/               # Mailables para notificaciones
+├── database/
+│   ├── migrations/         # Esquema de base de datos
+│   ├── seeders/           # Datos de prueba
+│   └── factories/         # Factories para testing
+├── resources/
+│   ├── js/
+│   │   ├── Pages/
+│   │   │   ├── Public/    # Vistas públicas (Vue)
+│   │   │   └── Admin/     # Vistas admin (Vue)
+│   │   └── Layouts/
+│   └── views/             # Templates Blade
+├── routes/
+│   └── web.php           # Definición de rutas
+└── public/               # Assets compilados
+```
+
+## 🎯 Funcionalidades Implementadas
+
+### Base de Datos
+- ✅ Migraciones para tablas: users, doctors, appointments
+- ✅ Relaciones: Doctor hasMany Appointments
+- ✅ Seeders con datos de prueba
+- ✅ Factories para generación de datos
+
+### Backend (Laravel)
+- ✅ Sistema de autenticación con Jetstream
+- ✅ CRUD completo de médicos
+- ✅ Gestión de citas con estados (pending, confirmed, rejected, completed)
+- ✅ Validación de disponibilidad de horarios
+- ✅ Detección de colisiones de citas
+- ✅ Sistema de notificaciones por email
+- ✅ Route model binding con slugs
+
+### Frontend (Vue + Inertia)
+- ✅ SPA (Single Page Application) sin recarga de página
+- ✅ Interfaz responsive con TailwindCSS
+- ✅ Calendario interactivo para selección de citas
+- ✅ Dashboard administrativo con estadísticas
+- ✅ Formularios reactivos con validación
+- ✅ Componentes reutilizables
+
+## 🧪 Testing
+
+Para ejecutar las pruebas (si se implementan):
+```bash
+php artisan test
+```
+
+## 🐛 Solución de Problemas
+
+**Error: Class DatabaseSeeder does not exist**
+```bash
+composer dump-autoload
+php artisan optimize:clear
+```
+
+**Error: SQLSTATE[42P01] Table doesn't exist**
+```bash
+php artisan migrate:fresh --seed
+```
+
+**Frontend no se actualiza**
+```bash
+npm run build
+# O en desarrollo:
+npm run dev
+```
+
+## Notas del Desarrollador
+
+- Las citas tienen una duración configurable (por defecto 20 minutos) en `.env`
+- Los horarios de médicos se almacenan en formato JSON para mayor flexibilidad
+- Se implementó un sistema de slugs para URLs amigables
+- Los emails tienen fallback con try-catch para evitar crashes
+
+## Autores
+
+**Jhon Edison Garcia - Jose Daniel Arias**  
+Universidad de Caldas - Ingeniería de Sistemas  
+Contacto: admin@oftalmo.ucaldas.edu.co
+
+## 📄 Licencia
+
+Este proyecto fue desarrollado con fines académicos.  
+Laravel framework: [MIT license](https://opensource.org/licenses/MIT)

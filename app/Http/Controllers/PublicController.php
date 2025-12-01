@@ -2,95 +2,139 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Models\Doctor;
-use Inertia\Inertia;
+use App\Models\Appointment;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\AppointmentCreated;
 
 class PublicController extends Controller
 {
-    /**
-     * Display homepage with list of doctors
-     */
     public function index()
     {
-        $durationMinutes = (int) env('APPOINTMENT_DURATION_MINUTES', 30);
+        $doctors = Doctor::active()->get();
+        return inertia('Public/Index', compact('doctors'));
+    }
+
+    public function show(Doctor $doctor)
+    {
         
-        $doctors = Doctor::active()
-            ->orderBy('name')
-            ->get()
-            ->map(function ($doctor) use ($durationMinutes) {
-                return [
-                    'id' => $doctor->id,
-                    'name' => $doctor->name,
-                    'slug' => $doctor->slug,
-                    'specialty' => $doctor->specialty,
-                    'bio' => $doctor->bio,
-                    'email' => $doctor->email,
-                    'phone' => $doctor->phone,
-                    'photo' => $doctor->photo,
-                    'is_active' => $doctor->is_active,
-                    'upcoming_availability' => $doctor->getUpcomingAvailability($durationMinutes),
-                ];
-            });
+        $doctor->load(['appointments' => function ($query) {
+            $query->whereIn('status', ['pending', 'confirmed'])
+                  ->where('start', '>=', now())
+                  ->orderBy('start');
+        }]);
 
-        return Inertia::render('Public/Home', [
-            'doctors' => $doctors,
-            'canLogin' => true,
-        ]);
+        return inertia('Public/DoctorProfile', compact('doctor'));
     }
 
-    /**
-     * Display doctor profile and available time slots
-     */
-    public function showDoctor(Doctor $doctor)
+    public function newAppointment(Request $request)
     {
-        if (!$doctor->is_active) {
-            abort(404);
-        }
-
-        $durationMinutes = (int) env('APPOINTMENT_DURATION_MINUTES', 30);
-        $availability = $doctor->getUpcomingAvailability($durationMinutes);
-
-        return Inertia::render('Public/DoctorProfile', [
-            'doctor' => [
-                'id' => $doctor->id,
-                'name' => $doctor->name,
-                'slug' => $doctor->slug,
-                'specialty' => $doctor->specialty,
-                'license_number' => $doctor->license_number,
-                'bio' => $doctor->bio,
-                'photo' => $doctor->photo,
-                'email' => $doctor->email,
-                'phone' => $doctor->phone,
-            ],
-            'availability' => $availability,
-        ]);
+        
+        $doctor = Doctor::where('slug', $request->query('doctor'))->firstOrFail();
+        $start = Carbon::parse($request->query('start'));
+        
+        return inertia('Public/NewAppointment', compact('doctor', 'start'));
     }
 
-    /**
-     * Show appointment booking form
-     */
-    public function showBookingForm()
+    public function storeAppointment(Request $request)
     {
-        $doctorSlug = request('doctor');
-        $startTime = request('start');
+        $validated = $request->validate([
+            'doctor_id' => 'required|exists:doctors,id',
+            'patient_name' => 'required|string|max:255',
+            'patient_email' => 'required|email',
+            'patient_phone' => 'nullable|string|max:20',
+            'start' => 'required|date',
+        ]);
 
-        if (!$doctorSlug || !$startTime) {
-            return redirect()->route('home')
-                ->with('error', 'Información incompleta para agendar la cita.');
+        $doctor = Doctor::findOrFail($validated['doctor_id']);
+        $start = Carbon::parse($validated['start']);
+        $duration = (int) env('APPOINTMENT_DURATION_MINUTES', 20);
+        $end = $start->copy()->addMinutes($duration);
+
+        
+        if (!$this->isWithinWeeklyAvailability($doctor, $start, $end)) {
+            return back()->withErrors(['start' => 'El horario seleccionado no está dentro de la disponibilidad del médico.'])->withInput();
         }
 
-        $doctor = Doctor::where('slug', $doctorSlug)->active()->firstOrFail();
+        
+        $collision = Appointment::where('doctor_id', $doctor->id)
+            ->whereIn('status', ['pending', 'confirmed'])
+            ->where(function ($query) use ($start, $end) {
+                $query->whereBetween('start', [$start, $end->copy()->subSecond()])
+                    ->orWhereBetween('end', [$start->copy()->addSecond(), $end])
+                    ->orWhere(function ($q) use ($start, $end) {
+                        $q->where('start', '<', $start)->where('end', '>', $start);
+                    });
+            })
+            ->exists();
 
-        return Inertia::render('Public/BookAppointment', [
-            'doctor' => [
-                'id' => $doctor->id,
-                'name' => $doctor->name,
-                'slug' => $doctor->slug,
-                'specialty' => $doctor->specialty,
-                'photo' => $doctor->photo,
-            ],
-            'startTime' => $startTime,
-            'durationMinutes' => (int) env('APPOINTMENT_DURATION_MINUTES', 30),
+        if ($collision) {
+            return back()->withErrors(['start' => 'El horario ya está reservado o en espera para este médico.'])->withInput();
+        }
+
+        
+        $appointment = Appointment::create([
+            'doctor_id' => $doctor->id,
+            'patient_name' => $validated['patient_name'],
+            'patient_email' => $validated['patient_email'],
+            'patient_phone' => $validated['patient_phone'] ?? null,
+            'start' => $start,
+            'end' => $end,
+            'status' => 'pending',
         ]);
+
+        
+        try {
+            Mail::to($appointment->patient_email)->send(new AppointmentCreated($appointment));
+        } catch (\Exception $e) {
+            
+            \Log::error('Failed to send appointment email: ' . $e->getMessage());
+        }
+
+        return redirect()->route('public.index')->with('success', 'Cita solicitada exitosamente. Recibirás un correo de confirmación.');
+    }
+
+    protected function isWithinWeeklyAvailability(Doctor $doctor, Carbon $start, Carbon $end): bool
+    {
+        $dayOfWeek = strtolower($start->format('l')); 
+        $schedule = $doctor->weekly_schedule ?? [];
+
+        \Log::info('Checking availability', [
+            'day' => $dayOfWeek,
+            'start' => $start->format('Y-m-d H:i:s'),
+            'end' => $end->format('Y-m-d H:i:s'),
+            'schedule' => $schedule
+        ]);
+
+        if (!isset($schedule[$dayOfWeek]) || empty($schedule[$dayOfWeek])) {
+            \Log::info('No schedule for day: ' . $dayOfWeek);
+            return false;
+        }
+
+        $timeStart = $start->format('H:i');
+        $timeEnd = $end->format('H:i');
+
+        \Log::info('Time comparison', [
+            'timeStart' => $timeStart,
+            'timeEnd' => $timeEnd,
+            'slots' => $schedule[$dayOfWeek]
+        ]);
+
+        foreach ($schedule[$dayOfWeek] as $slot) {
+            \Log::info('Comparing slot', [
+                'slot_start' => $slot['start'],
+                'slot_end' => $slot['end'],
+                'check_start' => $timeStart >= $slot['start'],
+                'check_end' => $timeEnd <= $slot['end']
+            ]);
+            
+            if ($timeStart >= $slot['start'] && $timeEnd <= $slot['end']) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

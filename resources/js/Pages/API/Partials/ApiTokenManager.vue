@@ -74,7 +74,7 @@ const deleteApiToken = () => {
 
 <template>
     <div>
-        <!-- Generate API Token -->
+        
         <FormSection @submitted="createApiToken">
             <template #title>
                 Create API Token
@@ -85,7 +85,7 @@ const deleteApiToken = () => {
             </template>
 
             <template #form>
-                <!-- Token Name -->
+                
                 <div class="col-span-6 sm:col-span-4">
                     <InputLabel for="name" value="Name" />
                     <TextInput
@@ -98,7 +98,7 @@ const deleteApiToken = () => {
                     <InputError :message="createApiTokenForm.errors.name" class="mt-2" />
                 </div>
 
-                <!-- Token Permissions -->
+                
                 <div v-if="availablePermissions.length > 0" class="col-span-6">
                     <InputLabel for="permissions" value="Permissions" />
 
@@ -106,7 +106,7 @@ const deleteApiToken = () => {
                         <div v-for="permission in availablePermissions" :key="permission">
                             <label class="flex items-center">
                                 <Checkbox v-model:checked="createApiTokenForm.permissions" :value="permission" />
-                                <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ permission }}</span>
+                                <span class="ms-2 text-sm text-gray-600">{{ permission }}</span>
                             </label>
                         </div>
                     </div>
@@ -127,7 +127,7 @@ const deleteApiToken = () => {
         <div v-if="tokens.length > 0">
             <SectionBorder />
 
-            <!-- Manage API Tokens -->
+            
             <div class="mt-10 sm:mt-0">
                 <ActionSection>
                     <template #title>
@@ -138,11 +138,11 @@ const deleteApiToken = () => {
                         You may delete any of your existing tokens if they are no longer needed.
                     </template>
 
-                    <!-- API Token List -->
+                    
                     <template #content>
                         <div class="space-y-6">
                             <div v-for="token in tokens" :key="token.id" class="flex items-center justify-between">
-                                <div class="break-all dark:text-white">
+                                <div class="break-all">
                                     {{ token.name }}
                                 </div>
 
@@ -170,7 +170,7 @@ const deleteApiToken = () => {
             </div>
         </div>
 
-        <!-- Token Value Modal -->
+        
         <DialogModal :show="displayingToken" @close="displayingToken = false">
             <template #title>
                 API Token
@@ -181,7 +181,7 @@ const deleteApiToken = () => {
                     Please copy your new API token. For your security, it won't be shown again.
                 </div>
 
-                <div v-if="$page.props.jetstream.flash.token" class="mt-4 bg-gray-100 dark:bg-gray-900 px-4 py-2 rounded font-mono text-sm text-gray-500 break-all">
+                <div v-if="$page.props.jetstream.flash.token" class="mt-4 bg-gray-100 px-4 py-2 rounded font-mono text-sm text-gray-500 break-all">
                     {{ $page.props.jetstream.flash.token }}
                 </div>
             </template>
@@ -193,7 +193,7 @@ const deleteApiToken = () => {
             </template>
         </DialogModal>
 
-        <!-- API Token Permissions Modal -->
+        
         <DialogModal :show="managingPermissionsFor != null" @close="managingPermissionsFor = null">
             <template #title>
                 API Token Permissions
@@ -204,7 +204,7 @@ const deleteApiToken = () => {
                     <div v-for="permission in availablePermissions" :key="permission">
                         <label class="flex items-center">
                             <Checkbox v-model:checked="updateApiTokenForm.permissions" :value="permission" />
-                            <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ permission }}</span>
+                            <span class="ms-2 text-sm text-gray-600">{{ permission }}</span>
                         </label>
                     </div>
                 </div>
@@ -226,7 +226,7 @@ const deleteApiToken = () => {
             </template>
         </DialogModal>
 
-        <!-- Delete Token Confirmation Modal -->
+        
         <ConfirmationModal :show="apiTokenBeingDeleted != null" @close="apiTokenBeingDeleted = null">
             <template #title>
                 Delete API Token

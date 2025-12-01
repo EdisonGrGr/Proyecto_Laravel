@@ -1,269 +1,590 @@
 <template>
-    <div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-cyan-50">
-        <!-- Modern Header -->
-        <header class="sticky top-0 z-50 backdrop-blur-lg bg-white/80 border-b border-blue-100 shadow-sm">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex items-center gap-4 h-14 sm:h-16">
-                    <Link :href="route('home')" class="group flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors">
-                        <div class="p-2 bg-gray-100 group-hover:bg-blue-50 rounded-xl transition-colors">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+    <div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 flex flex-col relative">
+        <!-- Patrón decorativo de fondo -->
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+            <svg class="absolute w-full h-full opacity-[0.03]" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                        <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" stroke-width="1" class="text-blue-600"/>
+                    </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#grid)" />
+            </svg>
+            <div class="absolute top-20 right-10 w-64 h-64 bg-blue-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
+            <div class="absolute top-40 left-20 w-72 h-72 bg-indigo-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+            <div class="absolute bottom-20 left-1/2 w-64 h-64 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
+        </div>
+        <!-- Header with Logo -->
+        <header class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50 border-b border-gray-100">
+            <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-md">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                             </svg>
                         </div>
-                        <span class="hidden sm:inline font-medium">Volver</span>
-                    </Link>
-                    <div class="flex-1">
-                        <h1 class="text-lg md:text-xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
-                            Perfil del Especialista
-                        </h1>
-                        <p class="text-sm text-gray-500 hidden sm:block">Información detallada y disponibilidad</p>
+                        <div>
+                            <h1 class="text-lg font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                                Clínica Oftalmológica
+                            </h1>
+                            <p class="text-xs text-gray-600">Sistema de Agendamiento</p>
+                        </div>
                     </div>
+                    <Link href="/" class="flex items-center text-sm text-gray-600 hover:text-blue-600 transition-colors font-medium">
+                        <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                        </svg>
+                        <span class="hidden sm:inline">Volver</span>
+                    </Link>
                 </div>
             </div>
         </header>
 
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
-            <!-- Modern Doctor Profile Card -->
-            <div class="bg-white rounded-2xl shadow-xl overflow-hidden mb-6 border border-gray-100">
-                <div class="lg:flex">
-                    <!-- Photo Section with Modern Design -->
-                    <div class="lg:w-2/5 relative bg-gradient-to-br from-blue-500 via-blue-600 to-cyan-600 p-8 lg:p-10">
-                        <div class="absolute inset-0 opacity-10 bg-white/5"></div>
-                        <div class="relative text-center">
-                            <div class="inline-block relative mb-4">
-                                <div class="absolute inset-0 bg-white/20 rounded-full blur-2xl"></div>
-                                <div class="relative bg-white/10 backdrop-blur-sm p-6 rounded-full border-4 border-white/30">
-                                    <svg class="w-20 h-20 sm:w-24 sm:h-24 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-                                    </svg>
-                                </div>
-                            </div>
-                            <div class="inline-flex items-center gap-2 bg-green-500 text-white px-5 py-2.5 rounded-full text-sm font-bold shadow-lg">
-                                <span class="w-2.5 h-2.5 bg-white rounded-full animate-pulse"></span>
-                                Disponible para Consultas
-                            </div>
+        <main class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex-1 relative z-10">
+            <!-- Doctor Info Card - Compact -->
+            <div class="bg-white rounded-xl shadow-lg p-4 sm:p-6 mb-6 border border-gray-100">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                    <!-- Avatar -->
+                    <div class="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-2xl flex items-center justify-center shadow-md flex-shrink-0">
+                        <svg class="w-12 h-12 sm:w-14 sm:h-14 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                    </div>
+                    
+                    <!-- Doctor Info -->
+                    <div class="flex-1">
+                        <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-1">{{ doctor.name }}</h2>
+                        <p class="text-sm sm:text-base text-blue-600 font-medium flex items-center mb-3">
+                            <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                            </svg>
+                            {{ doctor.specialty }}
+                        </p>
+                        
+                        <!-- Quick Schedule Summary -->
+                        <div class="flex flex-wrap gap-2">
+                            <span 
+                                v-for="(schedule, day) in doctor.weekly_schedule" 
+                                :key="day"
+                                v-if="schedule && schedule.length > 0"
+                                class="inline-flex items-center px-2.5 py-1 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 text-blue-700 rounded-lg text-xs font-medium"
+                            >
+                                {{ translateDay(day).substring(0, 3) }}
+                            </span>
                         </div>
                     </div>
 
-                    <!-- Info Section with Modern Layout -->
-                    <div class="lg:w-3/5 p-6 lg:p-8">
-                        <div class="mb-4">
-                            <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">{{ doctor.name }}</h2>
-                            <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-200 text-blue-700 rounded-lg text-sm font-semibold">
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z" />
-                                </svg>
-                                {{ doctor.specialty }}
-                            </div>
-                        </div>
-                        
-                        <div class="mb-4">
-                            <p class="text-gray-600 leading-relaxed text-sm">{{ doctor.bio }}</p>
-                        </div>
-
-                        <!-- Contact Cards -->
-                        <div class="grid grid-cols-1 gap-3">
-                            <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                                <div class="flex-shrink-0 w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                                    <svg class="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
-                                        <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
-                                    </svg>
-                                </div>
-                                <div class="flex-1 min-w-0">
-                                    <p class="text-xs text-gray-500 font-medium uppercase tracking-wide">Email</p>
-                                    <a :href="`mailto:${doctor.email}`" class="text-gray-900 hover:text-blue-600 text-sm font-medium truncate block">
-                                        {{ doctor.email }}
-                                    </a>
-                                </div>
-                            </div>
-
-                            <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
-                                <div class="flex-shrink-0 w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
-                                    <svg class="w-6 h-6 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                                        <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
-                                    </svg>
-                                </div>
-                                <div class="flex-1">
-                                    <p class="text-xs text-gray-500 font-medium uppercase tracking-wide">Teléfono</p>
-                                    <a :href="`tel:${doctor.phone}`" class="text-gray-900 hover:text-green-600 font-medium">
-                                        {{ doctor.phone }}
-                                    </a>
-                                </div>
-                            </div>
-
-                            <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-xl">
-                                <div class="flex-shrink-0 w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
-                                    <svg class="w-6 h-6 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M6 6V5a3 3 0 013-3h2a3 3 0 013 3v1h2a2 2 0 012 2v3.57A22.952 22.952 0 0110 13a22.95 22.95 0 01-8-1.43V8a2 2 0 012-2h2zm2-1a1 1 0 011-1h2a1 1 0 011 1v1H8V5zm1 5a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1z" clip-rule="evenodd" />
-                                        <path d="M2 13.692V16a2 2 0 002 2h12a2 2 0 002-2v-2.308A24.974 24.974 0 0110 15c-2.796 0-5.487-.46-8-1.308z" />
-                                    </svg>
-                                </div>
-                                <div class="flex-1">
-                                    <p class="text-xs text-gray-500 font-medium uppercase tracking-wide">Licencia Médica</p>
-                                    <p class="text-gray-900 font-medium">{{ doctor.license_number }}</p>
-                                </div>
-                            </div>
-                        </div>
+                    <!-- Status Badge -->
+                    <div class="sm:self-start">
+                        <span class="inline-flex items-center px-3 py-1.5 bg-green-100 text-green-700 rounded-full text-xs font-semibold border border-green-200">
+                            <span class="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></span>
+                            Disponible
+                        </span>
                     </div>
                 </div>
             </div>
 
-            <!-- Modern Availability Section -->
-            <div class="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 md:p-8">
-                <div class="flex items-center gap-3 mb-6">
-                    <div class="p-2.5 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-lg">
-                        <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
-                        </svg>
-                    </div>
-                    <div>
-                        <h3 class="text-xl sm:text-2xl font-bold text-gray-900">Horarios Disponibles</h3>
-                        <p class="text-gray-500 text-sm">Selecciona la fecha y hora de tu preferencia</p>
-                    </div>
-                </div>
-
-                <div v-if="availability && availability.length > 0" class="space-y-6">
-                    <!-- Group by date with modern cards -->
-                    <div v-for="(dateGroup, date) in groupedAvailability" :key="date" class="bg-gradient-to-r from-gray-50 to-blue-50/30 rounded-xl p-4 border border-gray-200">
-                        <div class="flex items-center gap-3 mb-5">
-                            <div class="w-1 h-10 bg-gradient-to-b from-blue-600 to-cyan-600 rounded-full"></div>
-                            <h4 class="text-xl font-bold text-gray-800">
-                                {{ formatDateFull(date) }}
-                            </h4>
+            <!-- Weekly Calendar -->
+            <div class="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden">
+                <!-- Calendar Header -->
+                <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-4 sm:px-6 py-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                        <div class="flex items-center text-white">
+                            <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            <div>
+                                <h2 class="text-xl font-bold">Horarios Disponibles</h2>
+                                <p class="text-sm text-blue-100">{{ currentWeekRange }}</p>
+                            </div>
                         </div>
-                        
-                        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
-                            <button
-                                v-for="slot in dateGroup"
-                                :key="`${slot.date}-${slot.time}`"
-                                @click="selectSlot(slot)"
-                                :class="[
-                                    'group relative px-3 py-3 rounded-lg border-2 transition-all duration-200 font-semibold text-sm',
-                                    selectedSlot && selectedSlot.date === slot.date && selectedSlot.time === slot.time
-                                        ? 'border-blue-600 bg-gradient-to-r from-blue-600 to-cyan-600 text-white shadow-lg scale-105'
-                                        : 'border-gray-200 bg-white hover:border-blue-400 hover:bg-blue-50 text-gray-700 hover:scale-105 hover:shadow-md'
-                                ]"
+                        <div class="flex gap-2">
+                            <button 
+                                @click="previousWeek" 
+                                class="flex items-center px-3 py-2 bg-white/20 hover:bg-white/30 text-white rounded-lg transition-all text-sm font-medium backdrop-blur-sm"
                             >
-                                <svg class="w-4 h-4 mx-auto mb-1" :class="selectedSlot && selectedSlot.date === slot.date && selectedSlot.time === slot.time ? 'text-white' : 'text-blue-600'" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
+                                <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                                 </svg>
-                                {{ slot.time }}
+                                <span class="hidden sm:inline">Anterior</span>
+                            </button>
+                            <button 
+                                @click="nextWeek" 
+                                class="flex items-center px-3 py-2 bg-white/20 hover:bg-white/30 text-white rounded-lg transition-all text-sm font-medium backdrop-blur-sm"
+                            >
+                                <span class="hidden sm:inline">Siguiente</span>
+                                <svg class="w-4 h-4 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                </svg>
                             </button>
                         </div>
                     </div>
                 </div>
 
-                <div v-else class="text-center py-16">
-                    <div class="inline-flex p-6 bg-gray-100 rounded-full mb-4">
-                        <svg class="w-12 h-12 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
-                        </svg>
+                <!-- Calendar Grid - Desktop -->
+                <div class="hidden lg:block p-4">
+                    <div class="grid grid-cols-7 gap-3">
+                        <div 
+                            v-for="day in weekDays" 
+                            :key="day.date"
+                            class="border-2 rounded-xl overflow-hidden transition-all"
+                            :class="isToday(day.fullDate) ? 'border-blue-400 bg-blue-50/50' : 'border-gray-200 hover:border-blue-300'"
+                        >
+                            <div class="text-center py-3 border-b-2 border-gray-200" :class="isToday(day.fullDate) ? 'bg-blue-100' : 'bg-gray-50'">
+                                <div class="font-bold text-sm text-gray-900">{{ day.name }}</div>
+                                <div class="text-xs font-semibold mt-1" :class="isToday(day.fullDate) ? 'text-blue-600' : 'text-gray-600'">
+                                    {{ day.date }}
+                                </div>
+                            </div>
+                            <div class="p-2 space-y-1.5 max-h-96 overflow-y-auto custom-scrollbar">
+                                <button
+                                    v-for="slot in day.availableSlots"
+                                    :key="slot"
+                                    @click="selectSlot(day.fullDate, slot)"
+                                    class="w-full text-xs px-2.5 py-2 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-lg hover:from-green-600 hover:to-emerald-600 transition-all font-medium shadow-sm hover:shadow-md transform hover:scale-105"
+                                >
+                                    {{ slot }}
+                                </button>
+                                <div v-if="day.availableSlots.length === 0" class="text-xs text-gray-400 text-center py-4">
+                                    <svg class="w-8 h-8 mx-auto mb-2 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                    Sin espacios
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <h4 class="text-xl font-bold text-gray-700 mb-2">No hay horarios disponibles</h4>
-                    <p class="text-gray-500">Por favor, vuelve a consultar más tarde</p>
                 </div>
 
-                <!-- Modern Selected Slot Confirmation -->
-                <div v-if="selectedSlot" class="mt-6 relative overflow-hidden bg-gradient-to-r from-blue-600 to-cyan-600 rounded-xl shadow-2xl">
-                    <div class="absolute inset-0 bg-white/10 backdrop-blur-sm"></div>
-                    <div class="relative p-6">
-                        <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
-                            <div class="flex items-start gap-4 flex-1">
-                                <div class="flex-shrink-0 p-3 bg-white/20 backdrop-blur-sm rounded-xl">
-                                    <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                                    </svg>
-                                </div>
-                                <div class="text-white flex-1">
-                                    <h4 class="text-2xl font-bold mb-3">¡Horario Seleccionado!</h4>
-                                    <div class="space-y-2">
-                                        <div class="flex items-center gap-2">
-                                            <svg class="w-5 h-5 text-blue-100" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd" />
-                                            </svg>
-                                            <span class="font-semibold text-lg">{{ formatDateFull(selectedSlot.date) }}</span>
-                                        </div>
-                                        <div class="flex items-center gap-2">
-                                            <svg class="w-5 h-5 text-blue-100" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
-                                            </svg>
-                                            <span class="font-semibold text-lg">{{ selectedSlot.time }}</span>
-                                        </div>
-                                        <div class="flex items-center gap-2 mt-3">
-                                            <svg class="w-5 h-5 text-blue-100" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
-                                            </svg>
-                                            <span class="text-blue-100">Duración estimada: 30 minutos</span>
-                                        </div>
+                <!-- Calendar Grid - Mobile/Tablet -->
+                <div class="lg:hidden p-4 space-y-3">
+                    <div 
+                        v-for="day in weekDays" 
+                        :key="day.date"
+                        class="border-2 rounded-xl overflow-hidden"
+                        :class="isToday(day.fullDate) ? 'border-blue-400 bg-blue-50/30' : 'border-gray-200'"
+                    >
+                        <div class="flex items-center justify-between px-4 py-3 border-b-2 border-gray-200" :class="isToday(day.fullDate) ? 'bg-blue-100' : 'bg-gray-50'">
+                            <div class="flex items-center">
+                                <div class="mr-3">
+                                    <div class="font-bold text-base text-gray-900">{{ day.name }}</div>
+                                    <div class="text-sm font-semibold" :class="isToday(day.fullDate) ? 'text-blue-600' : 'text-gray-600'">
+                                        {{ day.date }}
                                     </div>
                                 </div>
+                            </div>
+                            <span class="text-xs font-semibold px-2.5 py-1 rounded-full" :class="day.availableSlots.length > 0 ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'">
+                                {{ day.availableSlots.length }} espacios
+                            </span>
+                        </div>
+                        <div class="p-3">
+                            <div v-if="day.availableSlots.length > 0" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2">
                                 <button
-                                    @click="selectedSlot = null"
-                                    class="flex-shrink-0 p-2 hover:bg-white/20 rounded-lg transition-colors duration-200"
+                                    v-for="slot in day.availableSlots"
+                                    :key="slot"
+                                    @click="selectSlot(day.fullDate, slot)"
+                                    class="text-sm px-3 py-2.5 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-lg hover:from-green-600 hover:to-emerald-600 transition-all font-semibold shadow-sm hover:shadow-md"
                                 >
-                                    <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                    </svg>
+                                    {{ slot }}
                                 </button>
                             </div>
-                            <Link
-                                :href="route('appointments.booking-form', { doctor: doctor.slug, start: selectedSlot.dateTime })"
-                                class="group flex-shrink-0 px-8 py-4 bg-white text-blue-600 font-bold rounded-xl shadow-lg hover:shadow-2xl transition-all duration-200 hover:scale-105 flex items-center gap-2"
-                            >
-                                Continuar con la Reserva
-                                <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            <div v-else class="text-center py-6">
+                                <svg class="w-10 h-10 mx-auto mb-2 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                 </svg>
-                            </Link>
+                                <p class="text-sm text-gray-500">No hay espacios disponibles</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </main>
+
+        <!-- Modal de Confirmación de Cita -->
+        <Teleport to="body">
+            <Transition name="modal">
+                <div v-if="showModal" class="fixed inset-0 z-[100] overflow-y-auto" @click.self="closeModal">
+                    <!-- Overlay oscuro con blur -->
+                    <div class="fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity"></div>
+                    
+                    <!-- Modal Container -->
+                    <div class="flex min-h-full items-center justify-center p-4">
+                        <div 
+                            class="modal-container relative bg-white rounded-2xl shadow-2xl w-full max-w-md transform transition-all"
+                            @click.stop
+                        >
+                            <!-- Header del Modal -->
+                            <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-5 py-4 rounded-t-2xl">
+                                <div class="flex items-center justify-between text-white">
+                                    <div class="flex items-center space-x-2">
+                                        <div class="w-9 h-9 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                                            </svg>
+                                        </div>
+                                        <h3 class="text-lg font-bold">Confirmar Cita</h3>
+                                    </div>
+                                    <button 
+                                        @click="closeModal"
+                                        class="w-8 h-8 rounded-lg hover:bg-white/20 transition-colors flex items-center justify-center"
+                                    >
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Detalles de la Cita -->
+                            <div class="px-5 pt-4 pb-3">
+                                <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-3.5 space-y-2.5">
+                                    <div class="flex items-start">
+                                        <svg class="w-4 h-4 text-blue-600 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                        </svg>
+                                        <div class="flex-1">
+                                            <p class="text-[11px] text-gray-600 font-medium">Médico:</p>
+                                            <p class="text-sm font-bold text-gray-900">{{ doctor.name }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start">
+                                        <svg class="w-4 h-4 text-blue-600 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                        <div class="flex-1">
+                                            <p class="text-[11px] text-gray-600 font-medium">Fecha y Hora:</p>
+                                            <p class="text-sm font-bold text-gray-900 capitalize">{{ selectedSlot?.dateFormatted }}</p>
+                                            <p class="text-base font-bold text-blue-600 mt-0.5">{{ selectedSlot?.time }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Formulario -->
+                            <form @submit.prevent="submitAppointment" class="px-5 pb-5">
+                                <div class="mb-3">
+                                    <div class="flex items-center mb-3">
+                                        <svg class="w-4 h-4 text-blue-600 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                        </svg>
+                                        <h4 class="text-sm font-bold text-gray-900">Datos del Paciente</h4>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-3">
+                                    <div>
+                                        <label for="modal_patient_name" class="block text-xs font-semibold text-gray-700 mb-1">
+                                            Nombre completo *
+                                        </label>
+                                        <input
+                                            id="modal_patient_name"
+                                            v-model="appointmentForm.patient_name"
+                                            type="text"
+                                            required
+                                            placeholder="Ingrese su nombre completo"
+                                            class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                            :class="{ 'border-red-500 ring-2 ring-red-200': formErrors.patient_name }"
+                                        />
+                                        <p v-if="formErrors.patient_name" class="mt-1 text-xs text-red-600 flex items-center">
+                                            <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                            </svg>
+                                            {{ formErrors.patient_name }}
+                                        </p>
+                                    </div>
+
+                                    <div>
+                                        <label for="modal_patient_email" class="block text-xs font-semibold text-gray-700 mb-1">
+                                            Correo electrónico *
+                                        </label>
+                                        <input
+                                            id="modal_patient_email"
+                                            v-model="appointmentForm.patient_email"
+                                            type="email"
+                                            required
+                                            placeholder="correo@ejemplo.com"
+                                            class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                            :class="{ 'border-red-500 ring-2 ring-red-200': formErrors.patient_email }"
+                                        />
+                                        <p v-if="formErrors.patient_email" class="mt-1 text-xs text-red-600 flex items-center">
+                                            <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                            </svg>
+                                            {{ formErrors.patient_email }}
+                                        </p>
+                                    </div>
+
+                                    <div>
+                                        <label for="modal_patient_phone" class="block text-xs font-semibold text-gray-700 mb-1">
+                                            Teléfono <span class="text-gray-500 font-normal">(opcional)</span>
+                                        </label>
+                                        <input
+                                            id="modal_patient_phone"
+                                            v-model="appointmentForm.patient_phone"
+                                            type="tel"
+                                            placeholder="Ej: 300 123 4567"
+                                            class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                        />
+                                    </div>
+
+                                    <div v-if="formErrors.start" class="p-2.5 bg-red-50 border-l-4 border-red-500 rounded-r-lg">
+                                        <div class="flex items-center">
+                                            <svg class="w-4 h-4 text-red-500 mr-1.5" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                            </svg>
+                                            <p class="text-xs text-red-700 font-medium">{{ formErrors.start }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Botones -->
+                                <div class="flex gap-2.5 mt-4">
+                                    <button
+                                        type="button"
+                                        @click="closeModal"
+                                        class="flex-1 px-4 py-2.5 text-sm font-semibold text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 border border-gray-300 transition-all"
+                                    >
+                                        Cancelar
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        :disabled="isSubmitting"
+                                        class="flex-1 flex items-center justify-center px-4 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg hover:from-blue-700 hover:to-indigo-700 disabled:from-gray-400 disabled:to-gray-400 disabled:cursor-not-allowed shadow-lg hover:shadow-xl transition-all"
+                                    >
+                                        <svg v-if="isSubmitting" class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        </svg>
+                                        <svg v-else class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        {{ isSubmitting ? 'Confirmando...' : 'Confirmar Cita' }}
+                                    </button>
+                                </div>
+
+                                <!-- Info box -->
+                                <div class="mt-3 p-2 bg-blue-50 rounded-lg border border-blue-100">
+                                    <div class="flex items-start">
+                                        <svg class="w-4 h-4 text-blue-600 mr-1.5 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        <p class="text-[10px] text-gray-700 leading-relaxed">
+                                            Recibirás un correo de confirmación con los detalles de tu cita.
+                                        </p>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </Transition>
+        </Teleport>
+
+        <!-- Footer profesional -->
+        <Footer class="relative z-10" />
     </div>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
+import Footer from '@/Components/Footer.vue';
 
 const props = defineProps({
-    doctor: {
-        type: Object,
-        required: true
-    },
-    availability: {
-        type: Array,
-        default: () => []
-    }
+    doctor: Object
 });
 
-const selectedSlot = ref(null);
+const currentWeekStart = ref(new Date());
+currentWeekStart.value.setHours(0, 0, 0, 0);
+const dayOfWeek = currentWeekStart.value.getDay();
+const diff = currentWeekStart.value.getDate() - dayOfWeek + (dayOfWeek === 0 ? -6 : 1);
+currentWeekStart.value.setDate(diff);
 
-// Group availability by date
-const groupedAvailability = computed(() => {
-    const grouped = {};
+const translateDay = (day) => {
+    const days = {
+        monday: 'Lunes',
+        tuesday: 'Martes',
+        wednesday: 'Miércoles',
+        thursday: 'Jueves',
+        friday: 'Viernes',
+        saturday: 'Sábado',
+        sunday: 'Domingo'
+    };
+    return days[day] || day;
+};
+
+const getDayKey = (date) => {
+    const days = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+    return days[date.getDay()];
+};
+
+const weekDays = computed(() => {
+    const days = [];
+    const dayNames = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
     
-    props.availability.forEach(slot => {
-        if (!grouped[slot.date]) {
-            grouped[slot.date] = [];
+    for (let i = 0; i < 7; i++) {
+        const date = new Date(currentWeekStart.value);
+        date.setDate(date.getDate() + i);
+        
+        const dayKey = getDayKey(date);
+        const schedule = props.doctor.weekly_schedule[dayKey] || [];
+        const availableSlots = generateTimeSlots(schedule, date);
+        
+        days.push({
+            name: dayNames[i],
+            date: date.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit' }),
+            fullDate: date,
+            availableSlots
+        });
+    }
+    
+    return days;
+});
+
+const generateTimeSlots = (schedule, date) => {
+    if (!schedule || schedule.length === 0) return [];
+    
+    const now = new Date();
+    if (date < now) return [];
+    
+    const slots = [];
+    const duration = 20; // minutos
+    
+    schedule.forEach(period => {
+        const [startHour, startMin] = period.start.split(':').map(Number);
+        const [endHour, endMin] = period.end.split(':').map(Number);
+        
+        let current = new Date(date);
+        current.setHours(startHour, startMin, 0, 0);
+        
+        const end = new Date(date);
+        end.setHours(endHour, endMin, 0, 0);
+        
+        while (current < end) {
+            if (current > now) {
+                const timeString = current.toTimeString().slice(0, 5);
+                if (!isSlotBooked(date, timeString)) {
+                    slots.push(timeString);
+                }
+            }
+            current = new Date(current.getTime() + duration * 60000);
         }
-        grouped[slot.date].push(slot);
     });
     
-    return grouped;
+    return slots;
+};
+
+const isSlotBooked = (date, time) => {
+    // Aquí verificarías contra las citas existentes
+    // Por ahora retornamos false (todos disponibles)
+    return false;
+};
+
+// Estado del modal
+const showModal = ref(false);
+const selectedSlot = ref(null);
+
+// Formulario de cita
+const appointmentForm = ref({
+    patient_name: '',
+    patient_email: '',
+    patient_phone: ''
 });
 
-const selectSlot = (slot) => {
-    selectedSlot.value = slot;
+const formErrors = ref({});
+const isSubmitting = ref(false);
+
+const selectSlot = (date, time) => {
+    const [hours, minutes] = time.split(':');
+    const selectedDate = new Date(date);
+    selectedDate.setHours(hours, minutes, 0, 0);
+    
+    selectedSlot.value = {
+        date: selectedDate,
+        time: time,
+        dateFormatted: selectedDate.toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
+    };
+    
+    showModal.value = true;
 };
 
-const formatDateFull = (dateString) => {
-    const date = new Date(dateString);
-    const days = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
-    const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-    
-    return `${days[date.getDay()]}, ${date.getDate()} de ${months[date.getMonth()]} de ${date.getFullYear()}`;
+const closeModal = () => {
+    showModal.value = false;
+    appointmentForm.value = {
+        patient_name: '',
+        patient_email: '',
+        patient_phone: ''
+    };
+    formErrors.value = {};
 };
+
+const submitAppointment = async () => {
+    formErrors.value = {};
+    isSubmitting.value = true;
+    
+    try {
+        await router.post('/appointments', {
+            doctor_id: props.doctor.id,
+            start: selectedSlot.value.date.toISOString(),
+            patient_name: appointmentForm.value.patient_name,
+            patient_email: appointmentForm.value.patient_email,
+            patient_phone: appointmentForm.value.patient_phone
+        }, {
+            onSuccess: () => {
+                closeModal();
+            },
+            onError: (errors) => {
+                formErrors.value = errors;
+                isSubmitting.value = false;
+            }
+        });
+    } catch (error) {
+        isSubmitting.value = false;
+    }
+};
+
+const previousWeek = () => {
+    currentWeekStart.value.setDate(currentWeekStart.value.getDate() - 7);
+    currentWeekStart.value = new Date(currentWeekStart.value);
+};
+
+const nextWeek = () => {
+    currentWeekStart.value.setDate(currentWeekStart.value.getDate() + 7);
+    currentWeekStart.value = new Date(currentWeekStart.value);
+};
+
+const isToday = (date) => {
+    const today = new Date();
+    return date.toDateString() === today.toDateString();
+};
+
+const currentWeekRange = computed(() => {
+    const start = new Date(currentWeekStart.value);
+    const end = new Date(currentWeekStart.value);
+    end.setDate(end.getDate() + 6);
+    
+    return `${start.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })} - ${end.toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' })}`;
+});
 </script>
+
+<style scoped>
+.custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+</style>
